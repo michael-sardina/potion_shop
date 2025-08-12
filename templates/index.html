@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Potion Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="bg-purple-100 min-h-screen flex items-center justify-center">
+  <main class="w-full max-w-md bg-white rounded-xl shadow-lg p-6 space-y-6">
+    <div class="text-center">
+      <h1 class="text-4xl font-extrabold text-purple-700 mb-1">Potion Shop</h1>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 text-center">
+      <div class="p-4 bg-yellow-100 rounded-lg shadow-inner">
+        <div class="text-sm text-yellow-500 font-semibold">Gold</div>
+        <div class="text-2xl font-bold text-yellow-500">{{ .Store.Gold }}</div>
+      </div>
+      <div class="p-4 bg-indigo-100 rounded-lg shadow-inner">
+        <div class="text-sm text-indigo-600 font-semibold">Potions</div>
+        <div class="text-2xl font-bold text-indigo-600">{{ .TotalPotions }}</div>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <svg height="200px" width="200px" viewBox="0 0 512.002 512.002" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="248.934" cy="405.76" r="26.15" fill="{{ .Store.SelectedColor }}"></circle>
+        <circle cx="165.506" cy="425.81" r="26.15" fill="{{ .Store.SelectedColor }}"></circle>
+        <circle cx="118.576" cy="367.98" r="26.15" fill="{{ .Store.SelectedColor }}"></circle>
+      </svg>
+    </div>
+
+    <form method="POST" action="/purchase">
+      <div class="mb-4">
+        <label for="potion-color" class="block text-sm font-medium text-gray-700">Potion Color</label>
+        <select id="potion-color" name="color" class="block w-full mt-2 p-2 border border-gray-300 rounded-md">
+          <option value="red" {{ if eq .Store.SelectedColor "red" }}selected{{ end }}>Red</option>
+          <option value="blue" {{ if eq .Store.SelectedColor "blue" }}selected{{ end }}>Blue</option>
+          <option value="green" {{ if eq .Store.SelectedColor "green" }}selected{{ end }}>Green</option>
+        </select>
+      </div>
+
+      {{ $price := .CurrentPrice }}
+      <button
+        type="submit"
+        class="w-full text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-lg px-6 py-3 text-center shadow-md transition-all
+               {{ if lt .Store.Gold $price }} opacity-60 cursor-not-allowed {{ end }}"
+        {{ if lt .Store.Gold $price }}disabled{{ end }}>
+        Purchase Potion ({{ $price }} gold)
+      </button>
+    </form>
+  </main>
+</body>
+</html>

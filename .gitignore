@@ -1,0 +1,8 @@
+potion-shop
+potion_shop
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/data/potion.db
